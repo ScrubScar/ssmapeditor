@@ -20,11 +20,14 @@ class camera
           bool camera_boundries_are_on;
           enum DIRECTION{ UP, DOWN, LEFT, RIGHT};
 
+          debug camera_debug;
+
           SDL_Rect cameraRect;
 };
 
 camera::camera()
 {
+    camera_debug.write_to_file("camera constructor started.");
     LEVEL_WIDTH = 0;
     LEVEL_HEIGHT = 0;
 
@@ -35,6 +38,8 @@ camera::camera()
 
     attached_to_player = true;
     camera_boundries_are_on = true;
+
+    camera_debug.write_to_file("camera constructor finished.");
 }
 
 camera::~camera()
@@ -49,10 +54,13 @@ camera::~camera()
 
     attached_to_player = true;
     camera_boundries_are_on = true;
+    camera_debug.write_to_file("camera destructor finished.");
 }
 
 void camera::init( int level_width, int level_height, int camera_width, int camera_height )
 {
+     camera_debug.write_to_file("camera.init() started.");
+
      LEVEL_WIDTH = level_width;
      LEVEL_HEIGHT = level_height;
 
@@ -61,6 +69,8 @@ void camera::init( int level_width, int level_height, int camera_width, int came
 
      attached_to_player = true;
      camera_boundries_are_on = true;
+
+     camera_debug.write_to_file("camera.init() finished.");
 }
 
 void camera::update_camera(SDL_Rect &playerRect)

@@ -10,7 +10,7 @@ class editor_engine
            ~editor_engine();
 
            void init(int screen_width, int screen_height);
-           void pulse();
+           void pulse(SDL_Event event);
            void clean_up();
 
     private:
@@ -20,6 +20,7 @@ class editor_engine
            int level_width;
            int level_height;
 
+           imageLoad image_loader;
            debug editor_debug;
            map_editor_main map_editor;
 
@@ -53,19 +54,25 @@ editor_engine::editor_engine(const char * name_of_level)
 
 editor_engine::~editor_engine()
 {
-    editor_debug.write_to_file("editor destructor started");
     TTF_Quit();
     SDL_Quit();
+        editor_debug.write_to_file("editor destructor finished");
 }
 
 void editor_engine::init(int screen_width, int screen_height)
 {
+     editor_debug.write_to_file("editor_engine.init() started");
+     levelSurface = SDL_LoadBMP("levelSurface.bmp");
+
      screen = SDL_SetVideoMode(screen_width, screen_height, 32, SDL_HWSURFACE);
      map_editor.init(level_width,level_height, screen_width, screen_height, levelSurface);
+
+     editor_debug.write_to_file("editor_engine.init() finished");
 }
 
-void editor_engine::pulse()
+void editor_engine::pulse(SDL_Event event)
 {
+    map_editor.pulse(event);
 
 
 

@@ -25,7 +25,7 @@ int main( int argc, char* args[] )
                    {
                        quit = true;
                        }
-                   map_editor.pulse();
+                   map_editor.pulse(event);
 
                    }
 
