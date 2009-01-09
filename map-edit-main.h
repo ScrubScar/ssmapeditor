@@ -16,6 +16,7 @@ class map_editor_main
            SDL_Surface *main_surface;
            debug editor_main_debug;
            camera editor_camera;
+           gui_button testButton;
            Uint8 *keystates;
            enum DIRECTION{ UP, DOWN, LEFT, RIGHT};
 };
@@ -38,9 +39,10 @@ void map_editor_main::init(int level_width, int level_height,
                            int screen_width, int screen_height, SDL_Surface * levelSurface)
 {
    editor_main_debug.write_to_file("map_editor_main.init() started.");
-
    main_surface = levelSurface;
    editor_camera.init(level_width,level_height,screen_width,screen_height);
+   testButton.main_init(650,100,100,100, main_surface);
+   testButton.set_border_width(2);
 
 
    editor_main_debug.write_to_file("map_editor_main.init() finished.");
@@ -49,6 +51,7 @@ void map_editor_main::init(int level_width, int level_height,
 void map_editor_main::pulse(SDL_Event event)
 {
     handle_input(event);
+    testButton.show(event);
 }
 
 void map_editor_main::handle_input(SDL_Event event)

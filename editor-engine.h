@@ -1,6 +1,8 @@
 #include "editor-debug.h"
 #include "editor-imageLoad.h"
 #include "editor-camera.h"
+#include "engine-window.h"
+#include "gui-button.h"
 #include "map-edit-main.h"
 class editor_engine
 {
@@ -16,6 +18,10 @@ class editor_engine
     private:
            SDL_Surface *screen;
            SDL_Surface *levelSurface;
+           SDL_Surface *canvas;
+
+           SDL_Rect canvasRect;
+           SDL_Rect levelPlaceRect;
 
            int level_width;
            int level_height;
@@ -38,6 +44,14 @@ editor_engine::editor_engine()
     level_width = 3200;
     level_height = 1200;
 
+    canvasRect.x = 0;
+    canvasRect.y = 0;
+    canvasRect.w = 600;
+    canvasRect.h = 520;
+
+    levelPlaceRect.x = 15;
+    levelPlaceRect.y = 50;
+
     if( SDL_Init( SDL_INIT_EVERYTHING ) < 0) {
        editor_debug.write_to_file("!--SDL failed to initialize.");
        }
@@ -56,13 +70,14 @@ editor_engine::~editor_engine()
 {
     TTF_Quit();
     SDL_Quit();
-        editor_debug.write_to_file("editor destructor finished");
+    editor_debug.write_to_file("editor destructor finished");
 }
 
 void editor_engine::init(int screen_width, int screen_height)
 {
      editor_debug.write_to_file("editor_engine.init() started");
      levelSurface = SDL_LoadBMP("levelSurface.bmp");
+     canvas = SDL_LoadBMP("canvas.bmp");
 
      screen = SDL_SetVideoMode(screen_width, screen_height, 32, SDL_HWSURFACE);
      map_editor.init(level_width,level_height, screen_width, screen_height, levelSurface);
@@ -72,9 +87,10 @@ void editor_engine::init(int screen_width, int screen_height)
 
 void editor_engine::pulse(SDL_Event event)
 {
+    SDL_BlitSurface(canvas, &canvasRect, levelSurface, &levelPlaceRect);
+    image_loader.apply_surface( 0, 0, levelSurface, screen );
+
     map_editor.pulse(event);
-
-
 
 
      if( SDL_Flip( screen ) < 0 ) {

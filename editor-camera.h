@@ -33,8 +33,8 @@ camera::camera()
 
     cameraRect.x = 0;
     cameraRect.y = 0;
-    cameraRect.w = 0;
-    cameraRect.h = 0;
+    cameraRect.w = 100;
+    cameraRect.h = 100;
 
     attached_to_player = true;
     camera_boundries_are_on = true;
